@@ -1,25 +1,19 @@
 import streamlit as st
 from webcam import webcam
 import yaml
-
 import uuid
-
-
 from predict import load_model, get_prediction
 from utils import image_to_byte_array, send_to_bucket
-
-
-
-
 from db import insert_data, get_data
 
 
-st.sidebar.title("Collected Image")
+import sentry_sdk
+from sentry_sdk import capture_exception
 
-placeholder = st.sidebar.empty()
-st.title("Mask Classification Model")
-username = st.text_input('User Name')
-
+sentry_sdk.init(
+    st.secrets['sentry']['sentry_url'],
+    traces_sample_rate=1.0
+)
 
 def set_images(placeholder, username):
     placeholder.empty()
@@ -31,6 +25,11 @@ def set_images(placeholder, username):
             st.image(picture['image_url'])
 
 def main():
+    st.sidebar.title("Collected Image")
+    st.title("Mask Classification Model")
+    placeholder = st.sidebar.empty()
+
+    username = st.text_input('User Name')
     if username:
         st.write('The current user is', username)
         set_images(placeholder, username)
@@ -57,14 +56,20 @@ def main():
             image_bytes = image_to_byte_array(captured_image)
             image_name = uuid.uuid4().hex+".png"
             image_url = send_to_bucket(image_name, image_bytes)
+
             st.write("Classifying...")
             _, y_hat = get_prediction(model, image_bytes)
             label = ','.join(config['classes'][y_hat.item()])
+
             st.write(f'label is {label}')
             insert_data(username, image_url, label)
             set_images(placeholder, username)
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except Exception as e:
+        capture_exception(e)
+        raise e
 
 
