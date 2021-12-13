@@ -26,3 +26,21 @@
     [sentry]
     sentry_url = <YOUR_SENTRY_URL>
   ```
+
+## Installation
+### Local Environmnet
+1. Add `secrets.toml` into `.streamlit` folder with the above information.
+2. Initialize Database
+   1. ```python init_database.py```
+3. Run following commands
+    ```
+    pip install -r requirements.txt
+    streamlit run main.py
+    ```
+
+### Streamlit Cloud Environment
+1. Sign up for https://streamlit.io/cloud using Github account.
+2. Click Deploy app.
+3. Choose Github repository and main python file.
+4. Copy and Paste the secrets by clicking the advanced setting button.
+5. Deploy
