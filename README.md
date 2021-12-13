@@ -6,8 +6,9 @@
   - GCP key file
 - Sentry
 - Streamlit Cloud
-- Secrets: `.streamlit/secrets.toml`
+- Secrets: `.streamlit/secrets.toml` 
   ```
+    #DO NOT SHARE THIS INFORMATION!!!!
     [mysql]
     host = <YOUR_HOST>
     port = 3306
