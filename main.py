@@ -41,7 +41,7 @@ def main():
     else:
         st.write("Got an image from the webcam:")
         st.image(captured_image)
-        print(captured_image)
+        
         with open("config.yaml") as f:
             config = yaml.load(f, Loader=yaml.FullLoader)
         
@@ -52,7 +52,8 @@ def main():
         
 
         if captured_image:
-
+            if not username:
+                raise "No username"
             image_bytes = image_to_byte_array(captured_image)
             image_name = uuid.uuid4().hex+".png"
             image_url = send_to_bucket(image_name, image_bytes)
