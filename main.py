@@ -49,22 +49,20 @@ def main():
         model = load_model()
         model.eval()
 
-        
+       
+        if not username:
+            raise "No username"
+        image_bytes = image_to_byte_array(captured_image)
+        image_name = uuid.uuid4().hex+".png"
+        image_url = send_to_bucket(image_name, image_bytes)
 
-        if captured_image:
-            if not username:
-                raise "No username"
-            image_bytes = image_to_byte_array(captured_image)
-            image_name = uuid.uuid4().hex+".png"
-            image_url = send_to_bucket(image_name, image_bytes)
+        st.write("Classifying...")
+        _, y_hat = get_prediction(model, image_bytes)
+        label = ','.join(config['classes'][y_hat.item()])
 
-            st.write("Classifying...")
-            _, y_hat = get_prediction(model, image_bytes)
-            label = ','.join(config['classes'][y_hat.item()])
-
-            st.write(f'label is {label}')
-            insert_data(username, image_url, label)
-            set_images(placeholder, username)
+        st.write(f'label is {label}')
+        insert_data(username, image_url, label)
+        set_images(placeholder, username)
 
 if __name__ == "__main__":
     try:
