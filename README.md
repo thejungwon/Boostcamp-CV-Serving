@@ -22,7 +22,7 @@
     private_key = <YOUR_PRIVATE_KEY>
     client_email = <YOUR_CLIENT_EMAIL>
     client_id = <YOUR_CLIENT_ID>
-    bucket = "<YOUR_BUCKET>"
+    bucket = <YOUR_BUCKET>
 
     [sentry]
     sentry_url = <YOUR_SENTRY_URL>
