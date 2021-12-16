@@ -31,11 +31,16 @@
 ## Installation
 ### Local Environmnet
 1. Add `secrets.toml` into `.streamlit` folder with the above information.
-2. Initialize Database
-   1. ```python init_database.py```
-3. Run following commands
+2. Install required libraries.
     ```
     pip install -r requirements.txt
+    ```
+4. Initialize Database.
+    ```
+    python init_database.py
+    ```
+5. Run following commands
+    ```
     streamlit run main.py
     ```
 
